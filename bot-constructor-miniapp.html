@@ -1,0 +1,1477 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>BotConstructor — Professional Bot Builder</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone/babel.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ============================================
+           КОРПОРАТИВНАЯ СИСТЕМА ДИЗАЙНА
+           Inspired by: Linear, Notion, Vercel, Stripe
+           ============================================ */
+        
+        :root {
+            /* Цветовая палитра - минималистичная и профессиональная */
+            --color-bg-primary: #ffffff;
+            --color-bg-secondary: #fafafa;
+            --color-bg-tertiary: #f5f5f5;
+            --color-bg-elevated: #ffffff;
+            --color-bg-overlay: rgba(0, 0, 0, 0.6);
+            
+            --color-border-primary: #e5e5e5;
+            --color-border-secondary: #f0f0f0;
+            --color-border-focus: #000000;
+            
+            --color-text-primary: #000000;
+            --color-text-secondary: #666666;
+            --color-text-tertiary: #999999;
+            --color-text-inverse: #ffffff;
+            
+            --color-accent-primary: #0066FF;
+            --color-accent-hover: #0052CC;
+            --color-accent-light: #E6F0FF;
+            
+            --color-success: #00C853;
+            --color-success-bg: #E8F5E9;
+            --color-warning: #FF9800;
+            --color-warning-bg: #FFF3E0;
+            --color-error: #F44336;
+            --color-error-bg: #FFEBEE;
+            
+            /* Платформы */
+            --color-telegram: #229ED9;
+            --color-discord: #5865F2;
+            
+            /* Типографика */
+            --font-family-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            --font-family-mono: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
+            
+            --font-size-xs: 11px;
+            --font-size-sm: 13px;
+            --font-size-base: 14px;
+            --font-size-md: 15px;
+            --font-size-lg: 16px;
+            --font-size-xl: 18px;
+            --font-size-2xl: 24px;
+            --font-size-3xl: 32px;
+            
+            --font-weight-normal: 400;
+            --font-weight-medium: 500;
+            --font-weight-semibold: 600;
+            --font-weight-bold: 700;
+            
+            /* Spacing - 4px grid */
+            --space-1: 4px;
+            --space-2: 8px;
+            --space-3: 12px;
+            --space-4: 16px;
+            --space-5: 20px;
+            --space-6: 24px;
+            --space-8: 32px;
+            --space-10: 40px;
+            --space-12: 48px;
+            
+            /* Радиусы */
+            --radius-sm: 6px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --radius-xl: 16px;
+            --radius-full: 9999px;
+            
+            /* Тени */
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 2px 4px rgba(0, 0, 0, 0.06), 0 4px 8px rgba(0, 0, 0, 0.04);
+            --shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.08), 0 8px 24px rgba(0, 0, 0, 0.06);
+            --shadow-xl: 0 8px 24px rgba(0, 0, 0, 0.12), 0 16px 48px rgba(0, 0, 0, 0.08);
+            
+            /* Анимации */
+            --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-base: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+            
+            /* Z-index */
+            --z-modal: 1000;
+            --z-dropdown: 100;
+            --z-header: 50;
+            --z-overlay: 999;
+        }
+        
+        /* ============================================
+           ТЕМНАЯ ТЕМА
+           ============================================ */
+        
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --color-bg-primary: #0a0a0a;
+                --color-bg-secondary: #111111;
+                --color-bg-tertiary: #1a1a1a;
+                --color-bg-elevated: #1a1a1a;
+                --color-bg-overlay: rgba(0, 0, 0, 0.8);
+                
+                --color-border-primary: #2a2a2a;
+                --color-border-secondary: #222222;
+                --color-border-focus: #ffffff;
+                
+                --color-text-primary: #ffffff;
+                --color-text-secondary: #a0a0a0;
+                --color-text-tertiary: #666666;
+                --color-text-inverse: #000000;
+                
+                --color-accent-light: #1a2942;
+                
+                --color-success-bg: #0d2818;
+                --color-warning-bg: #2d1f0d;
+                --color-error-bg: #2d0f0d;
+                
+                --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+                --shadow-md: 0 2px 4px rgba(0, 0, 0, 0.3), 0 4px 8px rgba(0, 0, 0, 0.2);
+                --shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.3);
+                --shadow-xl: 0 8px 24px rgba(0, 0, 0, 0.5), 0 16px 48px rgba(0, 0, 0, 0.4);
+            }
+        }
+        
+        /* ============================================
+           BASE STYLES
+           ============================================ */
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            font-family: var(--font-family-sans);
+            font-size: var(--font-size-base);
+            line-height: 1.5;
+            background: var(--color-bg-primary);
+            color: var(--color-text-primary);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow: hidden;
+        }
+        
+        #root {
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        /* ============================================
+           LAYOUT
+           ============================================ */
+        
+        .app {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: var(--color-bg-primary);
+        }
+        
+        /* ============================================
+           HEADER - Minimal & Clean
+           ============================================ */
+        
+        .app-header {
+            flex-shrink: 0;
+            height: 64px;
+            padding: 0 var(--space-6);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--color-bg-elevated);
+            border-bottom: 1px solid var(--color-border-primary);
+            position: relative;
+            z-index: var(--z-header);
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: var(--space-4);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+        }
+        
+        .logo-mark {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--color-accent-primary), #0052CC);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: var(--font-weight-bold);
+            font-size: var(--font-size-md);
+            color: white;
+            box-shadow: 0 2px 8px rgba(0, 102, 255, 0.2);
+        }
+        
+        .logo-text {
+            font-size: var(--font-size-md);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-text-primary);
+            letter-spacing: -0.01em;
+        }
+        
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+        }
+        
+        /* ============================================
+           BUTTONS - Premium Style
+           ============================================ */
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-2);
+            padding: 0 var(--space-4);
+            height: 36px;
+            font-family: var(--font-family-sans);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-medium);
+            line-height: 1;
+            border: none;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            white-space: nowrap;
+            user-select: none;
+        }
+        
+        .btn-primary {
+            background: var(--color-accent-primary);
+            color: white;
+            box-shadow: 0 1px 2px rgba(0, 102, 255, 0.2);
+        }
+        
+        .btn-primary:hover {
+            background: var(--color-accent-hover);
+            box-shadow: 0 2px 4px rgba(0, 102, 255, 0.3);
+            transform: translateY(-1px);
+        }
+        
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+        
+        .btn-secondary {
+            background: var(--color-bg-secondary);
+            color: var(--color-text-primary);
+            border: 1px solid var(--color-border-primary);
+        }
+        
+        .btn-secondary:hover {
+            background: var(--color-bg-tertiary);
+            border-color: var(--color-border-focus);
+        }
+        
+        .btn-ghost {
+            background: transparent;
+            color: var(--color-text-secondary);
+        }
+        
+        .btn-ghost:hover {
+            background: var(--color-bg-secondary);
+            color: var(--color-text-primary);
+        }
+        
+        .btn-sm {
+            height: 32px;
+            padding: 0 var(--space-3);
+            font-size: var(--font-size-xs);
+        }
+        
+        .btn-icon {
+            width: 36px;
+            padding: 0;
+        }
+        
+        /* ============================================
+           MAIN CONTENT
+           ============================================ */
+        
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--space-8) var(--space-6);
+        }
+        
+        /* ============================================
+           PLATFORM SELECTOR - Card Style
+           ============================================ */
+        
+        .section {
+            margin-bottom: var(--space-8);
+        }
+        
+        .section-header {
+            margin-bottom: var(--space-6);
+        }
+        
+        .section-title {
+            font-size: var(--font-size-2xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text-primary);
+            letter-spacing: -0.02em;
+            margin-bottom: var(--space-2);
+        }
+        
+        .section-subtitle {
+            font-size: var(--font-size-md);
+            color: var(--color-text-secondary);
+            line-height: 1.6;
+        }
+        
+        .platform-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--space-4);
+        }
+        
+        .platform-card {
+            position: relative;
+            padding: var(--space-6);
+            background: var(--color-bg-elevated);
+            border: 2px solid var(--color-border-primary);
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            transition: all var(--transition-base);
+            overflow: hidden;
+        }
+        
+        .platform-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, var(--color-accent-primary), transparent);
+            opacity: 0;
+            transition: opacity var(--transition-base);
+        }
+        
+        .platform-card:hover {
+            border-color: var(--color-border-focus);
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+        
+        .platform-card:hover::before {
+            opacity: 1;
+        }
+        
+        .platform-card.active {
+            border-color: var(--color-accent-primary);
+            background: var(--color-accent-light);
+            box-shadow: 0 0 0 4px rgba(0, 102, 255, 0.1);
+        }
+        
+        .platform-card.active::before {
+            opacity: 1;
+        }
+        
+        .platform-icon {
+            width: 48px;
+            height: 48px;
+            margin-bottom: var(--space-4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--color-bg-secondary);
+            border-radius: var(--radius-md);
+            font-size: 24px;
+            transition: all var(--transition-base);
+        }
+        
+        .platform-card:hover .platform-icon {
+            transform: scale(1.1);
+        }
+        
+        .platform-card.active .platform-icon {
+            background: white;
+            box-shadow: var(--shadow-md);
+        }
+        
+        .platform-name {
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-text-primary);
+            margin-bottom: var(--space-2);
+        }
+        
+        .platform-description {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+            line-height: 1.5;
+        }
+        
+        .platform-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-1);
+            margin-top: var(--space-3);
+            padding: var(--space-1) var(--space-2);
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-medium);
+            color: var(--color-text-secondary);
+            background: var(--color-bg-secondary);
+            border-radius: var(--radius-full);
+        }
+        
+        /* ============================================
+           SETTINGS CARDS - Premium Forms
+           ============================================ */
+        
+        .settings-card {
+            background: var(--color-bg-elevated);
+            border: 1px solid var(--color-border-primary);
+            border-radius: var(--radius-lg);
+            padding: var(--space-6);
+            margin-bottom: var(--space-4);
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: var(--space-5);
+        }
+        
+        .card-title {
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-text-primary);
+        }
+        
+        .form-group {
+            margin-bottom: var(--space-5);
+        }
+        
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+        
+        .form-label {
+            display: block;
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-medium);
+            color: var(--color-text-primary);
+            margin-bottom: var(--space-2);
+        }
+        
+        .form-help {
+            display: block;
+            font-size: var(--font-size-xs);
+            color: var(--color-text-tertiary);
+            margin-top: var(--space-1);
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: var(--space-3);
+            font-family: var(--font-family-sans);
+            font-size: var(--font-size-base);
+            color: var(--color-text-primary);
+            background: var(--color-bg-primary);
+            border: 1px solid var(--color-border-primary);
+            border-radius: var(--radius-md);
+            transition: all var(--transition-fast);
+            outline: none;
+        }
+        
+        .form-input:hover {
+            border-color: var(--color-border-focus);
+        }
+        
+        .form-input:focus {
+            border-color: var(--color-accent-primary);
+            box-shadow: 0 0 0 4px rgba(0, 102, 255, 0.1);
+        }
+        
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+            font-family: var(--font-family-mono);
+            font-size: var(--font-size-sm);
+            line-height: 1.6;
+        }
+        
+        /* ============================================
+           COMMANDS LIST - Clean Table Style
+           ============================================ */
+        
+        .commands-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: var(--space-4);
+        }
+        
+        .commands-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-3);
+        }
+        
+        .command-item {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-4);
+            padding: var(--space-4);
+            background: var(--color-bg-primary);
+            border: 1px solid var(--color-border-primary);
+            border-radius: var(--radius-md);
+            transition: all var(--transition-fast);
+        }
+        
+        .command-item:hover {
+            border-color: var(--color-border-focus);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .command-drag-handle {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-text-tertiary);
+            cursor: grab;
+        }
+        
+        .command-drag-handle:active {
+            cursor: grabbing;
+        }
+        
+        .command-content {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .command-name {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-2);
+            font-family: var(--font-family-mono);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-accent-primary);
+            margin-bottom: var(--space-1);
+        }
+        
+        .command-description {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+            margin-bottom: var(--space-2);
+            line-height: 1.5;
+        }
+        
+        .command-response {
+            padding: var(--space-3);
+            font-family: var(--font-family-mono);
+            font-size: var(--font-size-xs);
+            color: var(--color-text-secondary);
+            background: var(--color-bg-secondary);
+            border-left: 2px solid var(--color-accent-primary);
+            border-radius: var(--radius-sm);
+            line-height: 1.6;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+        
+        .command-actions {
+            display: flex;
+            gap: var(--space-1);
+        }
+        
+        .icon-btn {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            border: none;
+            border-radius: var(--radius-sm);
+            color: var(--color-text-tertiary);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+        
+        .icon-btn:hover {
+            background: var(--color-bg-secondary);
+            color: var(--color-text-primary);
+        }
+        
+        .icon-btn.delete:hover {
+            background: var(--color-error-bg);
+            color: var(--color-error);
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: var(--space-12) var(--space-4);
+        }
+        
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: var(--space-4);
+            opacity: 0.5;
+        }
+        
+        .empty-state-title {
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-text-primary);
+            margin-bottom: var(--space-2);
+        }
+        
+        .empty-state-description {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+            margin-bottom: var(--space-4);
+        }
+        
+        /* ============================================
+           PREVIEW - Professional Chat UI
+           ============================================ */
+        
+        .preview-container {
+            height: calc(100vh - 64px - var(--space-8) * 2);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .preview-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--space-4);
+            background: var(--color-bg-elevated);
+            border: 1px solid var(--color-border-primary);
+            border-bottom: none;
+            border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+        }
+        
+        .preview-title {
+            font-size: var(--font-size-base);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-text-primary);
+        }
+        
+        .preview-chat {
+            flex: 1;
+            padding: var(--space-6);
+            background: var(--color-bg-secondary);
+            border-left: 1px solid var(--color-border-primary);
+            border-right: 1px solid var(--color-border-primary);
+            overflow-y: auto;
+        }
+        
+        .chat-message {
+            margin-bottom: var(--space-4);
+            animation: messageSlide 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        @keyframes messageSlide {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .message-user {
+            display: flex;
+            justify-content: flex-end;
+        }
+        
+        .message-bubble {
+            max-width: 70%;
+            padding: var(--space-3) var(--space-4);
+            border-radius: var(--radius-lg);
+            font-size: var(--font-size-base);
+            line-height: 1.5;
+            word-wrap: break-word;
+        }
+        
+        .message-user .message-bubble {
+            background: var(--color-accent-primary);
+            color: white;
+            border-bottom-right-radius: var(--radius-sm);
+        }
+        
+        .message-bot .message-bubble {
+            background: var(--color-bg-elevated);
+            color: var(--color-text-primary);
+            border: 1px solid var(--color-border-primary);
+            border-bottom-left-radius: var(--radius-sm);
+        }
+        
+        .message-time {
+            font-size: var(--font-size-xs);
+            color: var(--color-text-tertiary);
+            margin-top: var(--space-1);
+        }
+        
+        .preview-input-area {
+            display: flex;
+            gap: var(--space-2);
+            padding: var(--space-4);
+            background: var(--color-bg-elevated);
+            border: 1px solid var(--color-border-primary);
+            border-top: none;
+            border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+        }
+        
+        .preview-input {
+            flex: 1;
+            padding: var(--space-3);
+            font-family: var(--font-family-sans);
+            font-size: var(--font-size-base);
+            color: var(--color-text-primary);
+            background: var(--color-bg-primary);
+            border: 1px solid var(--color-border-primary);
+            border-radius: var(--radius-md);
+            outline: none;
+            transition: all var(--transition-fast);
+        }
+        
+        .preview-input:focus {
+            border-color: var(--color-accent-primary);
+        }
+        
+        .send-btn {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--color-accent-primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+        
+        .send-btn:hover {
+            background: var(--color-accent-hover);
+            transform: translateY(-1px);
+        }
+        
+        /* ============================================
+           BOTTOM NAVIGATION - iOS Style
+           ============================================ */
+        
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 64px;
+            display: flex;
+            background: var(--color-bg-elevated);
+            border-top: 1px solid var(--color-border-primary);
+            z-index: var(--z-header);
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+        
+        .nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-1);
+            color: var(--color-text-tertiary);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            border: none;
+            background: transparent;
+        }
+        
+        .nav-item:hover {
+            color: var(--color-text-secondary);
+        }
+        
+        .nav-item.active {
+            color: var(--color-accent-primary);
+        }
+        
+        .nav-icon {
+            font-size: 22px;
+        }
+        
+        .nav-label {
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-medium);
+        }
+        
+        /* ============================================
+           MODAL - Premium Design
+           ============================================ */
+        
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: var(--color-bg-overlay);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: var(--z-modal);
+            padding: var(--space-4);
+            animation: fadeIn 0.2s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .modal-content {
+            width: 100%;
+            max-width: 520px;
+            max-height: 90vh;
+            background: var(--color-bg-elevated);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-xl);
+            overflow: hidden;
+            animation: modalSlide 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        @keyframes modalSlide {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.98);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--space-6);
+            border-bottom: 1px solid var(--color-border-primary);
+        }
+        
+        .modal-title {
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text-primary);
+        }
+        
+        .modal-body {
+            padding: var(--space-6);
+            max-height: calc(90vh - 140px);
+            overflow-y: auto;
+        }
+        
+        .modal-footer {
+            display: flex;
+            gap: var(--space-3);
+            padding: var(--space-6);
+            border-top: 1px solid var(--color-border-primary);
+        }
+        
+        /* ============================================
+           UTILITIES
+           ============================================ */
+        
+        .fade-in {
+            animation: fadeIn 0.3s ease;
+        }
+        
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--color-border-primary);
+            border-radius: var(--radius-full);
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--color-border-focus);
+        }
+        
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: var(--space-6) var(--space-4);
+            }
+            
+            .platform-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .section-title {
+                font-size: var(--font-size-xl);
+            }
+            
+            .main-content {
+                padding-bottom: 64px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        // Initialize Telegram WebApp
+        const tg = window.Telegram?.WebApp;
+        if (tg) {
+            tg.ready();
+            tg.expand();
+            tg.enableClosingConfirmation();
+            tg.setHeaderColor('#ffffff');
+            tg.setBackgroundColor('#ffffff');
+        }
+
+        function App() {
+            const [currentTab, setCurrentTab] = useState('settings');
+            const [platform, setPlatform] = useState('telegram');
+            const [botConfig, setBotConfig] = useState({
+                name: '',
+                description: '',
+                welcomeMessage: 'Привет! 👋 Я твой новый бот-помощник.',
+                commands: []
+            });
+            const [showCommandModal, setShowCommandModal] = useState(false);
+            const [editingCommand, setEditingCommand] = useState(null);
+            const [chatMessages, setChatMessages] = useState([]);
+            const [chatInput, setChatInput] = useState('');
+            const chatRef = useRef(null);
+
+            // Initialize preview
+            useEffect(() => {
+                if (currentTab === 'preview' && chatMessages.length === 0) {
+                    setChatMessages([{
+                        type: 'bot',
+                        text: botConfig.welcomeMessage || 'Привет! 👋',
+                        time: new Date().toLocaleTimeString('ru', { hour: '2-digit', minute: '2-digit' })
+                    }]);
+                }
+            }, [currentTab]);
+
+            // Auto-scroll chat
+            useEffect(() => {
+                if (chatRef.current) {
+                    chatRef.current.scrollTop = chatRef.current.scrollHeight;
+                }
+            }, [chatMessages]);
+
+            const saveBot = () => {
+                const data = JSON.stringify({ platform, botConfig });
+                if (tg?.CloudStorage) {
+                    tg.CloudStorage.setItem('bot_config', data);
+                    tg.showAlert('✅ Бот успешно сохранён!');
+                } else {
+                    localStorage.setItem('bot_config', data);
+                    alert('✅ Бот успешно сохранён!');
+                }
+            };
+
+            const addCommand = (command) => {
+                if (editingCommand !== null) {
+                    const updated = [...botConfig.commands];
+                    updated[editingCommand] = command;
+                    setBotConfig({ ...botConfig, commands: updated });
+                    setEditingCommand(null);
+                } else {
+                    setBotConfig({
+                        ...botConfig,
+                        commands: [...botConfig.commands, command]
+                    });
+                }
+                setShowCommandModal(false);
+            };
+
+            const deleteCommand = (index) => {
+                const updated = botConfig.commands.filter((_, i) => i !== index);
+                setBotConfig({ ...botConfig, commands: updated });
+            };
+
+            const sendMessage = () => {
+                if (!chatInput.trim()) return;
+
+                const userMsg = {
+                    type: 'user',
+                    text: chatInput,
+                    time: new Date().toLocaleTimeString('ru', { hour: '2-digit', minute: '2-digit' })
+                };
+
+                setChatMessages([...chatMessages, userMsg]);
+
+                setTimeout(() => {
+                    let response = '❓ Команда не найдена';
+                    
+                    if (chatInput.toLowerCase() === '/start') {
+                        response = botConfig.welcomeMessage;
+                    } else {
+                        const cmd = botConfig.commands.find(c => 
+                            chatInput.toLowerCase().startsWith('/' + c.command.toLowerCase())
+                        );
+                        if (cmd) response = cmd.response;
+                    }
+
+                    const botMsg = {
+                        type: 'bot',
+                        text: response,
+                        time: new Date().toLocaleTimeString('ru', { hour: '2-digit', minute: '2-digit' })
+                    };
+
+                    setChatMessages(prev => [...prev, botMsg]);
+                }, 500);
+
+                setChatInput('');
+            };
+
+            return (
+                <div className="app">
+                    <header className="app-header">
+                        <div className="header-left">
+                            <div className="logo">
+                                <div className="logo-mark">BC</div>
+                                <div className="logo-text">BotConstructor</div>
+                            </div>
+                        </div>
+                        <div className="header-actions">
+                            <button className="btn btn-primary" onClick={saveBot}>
+                                <span>💾</span>
+                                <span>Сохранить</span>
+                            </button>
+                        </div>
+                    </header>
+
+                    <main className="main-content">
+                        {currentTab === 'settings' && (
+                            <div className="container fade-in">
+                                <section className="section">
+                                    <div className="section-header">
+                                        <h1 className="section-title">Создайте своего бота</h1>
+                                        <p className="section-subtitle">
+                                            Выберите платформу и настройте команды. Никакого программирования не требуется.
+                                        </p>
+                                    </div>
+
+                                    <div className="platform-grid">
+                                        <div 
+                                            className={`platform-card ${platform === 'telegram' ? 'active' : ''}`}
+                                            onClick={() => setPlatform('telegram')}
+                                        >
+                                            <div className="platform-icon">✈️</div>
+                                            <div className="platform-name">Telegram</div>
+                                            <div className="platform-description">
+                                                Создайте бота для 800M+ пользователей Telegram с поддержкой команд и inline-кнопок
+                                            </div>
+                                            <div className="platform-badge">
+                                                <span>⚡</span>
+                                                <span>Самый популярный</span>
+                                            </div>
+                                        </div>
+
+                                        <div 
+                                            className={`platform-card ${platform === 'discord' ? 'active' : ''}`}
+                                            onClick={() => setPlatform('discord')}
+                                        >
+                                            <div className="platform-icon">💬</div>
+                                            <div className="platform-name">Discord</div>
+                                            <div className="platform-description">
+                                                Разверните бота для вашего Discord сервера с slash-командами и интерактивными элементами
+                                            </div>
+                                            <div className="platform-badge">
+                                                <span>🎮</span>
+                                                <span>Для сообществ</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+
+                                <section className="section">
+                                    <div className="settings-card">
+                                        <div className="card-header">
+                                            <h2 className="card-title">Основные настройки</h2>
+                                        </div>
+
+                                        <div className="form-group">
+                                            <label className="form-label">Имя бота</label>
+                                            <input 
+                                                type="text"
+                                                className="form-input"
+                                                value={botConfig.name}
+                                                onChange={(e) => setBotConfig({...botConfig, name: e.target.value})}
+                                                placeholder="Например: Мой Помощник"
+                                            />
+                                            <span className="form-help">Как пользователи будут видеть вашего бота</span>
+                                        </div>
+
+                                        <div className="form-group">
+                                            <label className="form-label">Описание</label>
+                                            <input 
+                                                type="text"
+                                                className="form-input"
+                                                value={botConfig.description}
+                                                onChange={(e) => setBotConfig({...botConfig, description: e.target.value})}
+                                                placeholder="Краткое описание возможностей бота"
+                                            />
+                                        </div>
+
+                                        <div className="form-group">
+                                            <label className="form-label">Приветственное сообщение</label>
+                                            <textarea 
+                                                className="form-input form-textarea"
+                                                value={botConfig.welcomeMessage}
+                                                onChange={(e) => setBotConfig({...botConfig, welcomeMessage: e.target.value})}
+                                                placeholder="Сообщение, которое увидит пользователь при /start"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="settings-card">
+                                        <div className="commands-header">
+                                            <h2 className="card-title">Команды бота</h2>
+                                            <button 
+                                                className="btn btn-primary btn-sm"
+                                                onClick={() => {
+                                                    setEditingCommand(null);
+                                                    setShowCommandModal(true);
+                                                }}
+                                            >
+                                                <span>+</span>
+                                                <span>Добавить</span>
+                                            </button>
+                                        </div>
+
+                                        {botConfig.commands.length > 0 ? (
+                                            <div className="commands-list">
+                                                {botConfig.commands.map((cmd, index) => (
+                                                    <div key={index} className="command-item">
+                                                        <div className="command-drag-handle">⋮⋮</div>
+                                                        <div className="command-content">
+                                                            <div className="command-name">
+                                                                <span>/</span>{cmd.command}
+                                                            </div>
+                                                            <div className="command-description">{cmd.description}</div>
+                                                            <div className="command-response">{cmd.response}</div>
+                                                        </div>
+                                                        <div className="command-actions">
+                                                            <button 
+                                                                className="icon-btn"
+                                                                onClick={() => {
+                                                                    setEditingCommand(index);
+                                                                    setShowCommandModal(true);
+                                                                }}
+                                                            >
+                                                                ✏️
+                                                            </button>
+                                                            <button 
+                                                                className="icon-btn delete"
+                                                                onClick={() => deleteCommand(index)}
+                                                            >
+                                                                🗑️
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        ) : (
+                                            <div className="empty-state">
+                                                <div className="empty-state-icon">⌨️</div>
+                                                <div className="empty-state-title">Пока нет команд</div>
+                                                <div className="empty-state-description">
+                                                    Добавьте первую команду, чтобы ваш бот мог отвечать пользователям
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+                                </section>
+                            </div>
+                        )}
+
+                        {currentTab === 'preview' && (
+                            <div className="container fade-in">
+                                <div className="preview-container">
+                                    <div className="preview-header">
+                                        <div className="preview-title">Предпросмотр бота</div>
+                                        <button 
+                                            className="btn btn-ghost btn-sm"
+                                            onClick={() => setChatMessages([{
+                                                type: 'bot',
+                                                text: botConfig.welcomeMessage,
+                                                time: new Date().toLocaleTimeString('ru', { hour: '2-digit', minute: '2-digit' })
+                                            }])}
+                                        >
+                                            🔄 Сброс
+                                        </button>
+                                    </div>
+
+                                    <div className="preview-chat" ref={chatRef}>
+                                        {chatMessages.map((msg, index) => (
+                                            <div key={index} className={`chat-message message-${msg.type}`}>
+                                                <div className="message-bubble">{msg.text}</div>
+                                                <div className="message-time">{msg.time}</div>
+                                            </div>
+                                        ))}
+                                    </div>
+
+                                    <div className="preview-input-area">
+                                        <input 
+                                            type="text"
+                                            className="preview-input"
+                                            value={chatInput}
+                                            onChange={(e) => setChatInput(e.target.value)}
+                                            onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
+                                            placeholder="Введите сообщение..."
+                                        />
+                                        <button className="send-btn" onClick={sendMessage}>
+                                            →
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {currentTab === 'export' && (
+                            <div className="container fade-in">
+                                <section className="section">
+                                    <div className="section-header">
+                                        <h1 className="section-title">Экспорт кода</h1>
+                                        <p className="section-subtitle">
+                                            Скопируйте код и разверните бота на своём сервере
+                                        </p>
+                                    </div>
+
+                                    <div className="settings-card">
+                                        <div className="form-group">
+                                            <label className="form-label">Готовый код бота</label>
+                                            <textarea 
+                                                className="form-input form-textarea"
+                                                readOnly
+                                                value={generateBotCode(platform, botConfig)}
+                                                style={{minHeight: '400px', fontFamily: 'var(--font-family-mono)'}}
+                                            />
+                                        </div>
+                                        <button 
+                                            className="btn btn-primary"
+                                            style={{width: '100%'}}
+                                            onClick={() => {
+                                                navigator.clipboard.writeText(generateBotCode(platform, botConfig));
+                                                tg?.showAlert('✅ Код скопирован!') || alert('✅ Код скопирован!');
+                                            }}
+                                        >
+                                            📋 Скопировать код
+                                        </button>
+                                    </div>
+                                </section>
+                            </div>
+                        )}
+                    </main>
+
+                    {showCommandModal && (
+                        <CommandModal 
+                            onClose={() => setShowCommandModal(false)}
+                            onSave={addCommand}
+                            initialCommand={editingCommand !== null ? botConfig.commands[editingCommand] : null}
+                        />
+                    )}
+
+                    <nav className="bottom-nav">
+                        <button 
+                            className={`nav-item ${currentTab === 'settings' ? 'active' : ''}`}
+                            onClick={() => setCurrentTab('settings')}
+                        >
+                            <div className="nav-icon">⚙️</div>
+                            <div className="nav-label">Настройки</div>
+                        </button>
+                        <button 
+                            className={`nav-item ${currentTab === 'preview' ? 'active' : ''}`}
+                            onClick={() => setCurrentTab('preview')}
+                        >
+                            <div className="nav-icon">▶️</div>
+                            <div className="nav-label">Превью</div>
+                        </button>
+                        <button 
+                            className={`nav-item ${currentTab === 'export' ? 'active' : ''}`}
+                            onClick={() => setCurrentTab('export')}
+                        >
+                            <div className="nav-icon">📦</div>
+                            <div className="nav-label">Экспорт</div>
+                        </button>
+                    </nav>
+                </div>
+            );
+        }
+
+        function CommandModal({ onClose, onSave, initialCommand }) {
+            const [command, setCommand] = useState(initialCommand?.command || '');
+            const [description, setDescription] = useState(initialCommand?.description || '');
+            const [response, setResponse] = useState(initialCommand?.response || '');
+
+            const handleSave = () => {
+                if (!command || !response) {
+                    alert('❌ Заполните название команды и ответ');
+                    return;
+                }
+                onSave({ command, description, response });
+            };
+
+            return (
+                <div className="modal-overlay" onClick={onClose}>
+                    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                        <div className="modal-header">
+                            <h2 className="modal-title">
+                                {initialCommand ? 'Редактировать команду' : 'Новая команда'}
+                            </h2>
+                            <button className="icon-btn" onClick={onClose}>✕</button>
+                        </div>
+
+                        <div className="modal-body">
+                            <div className="form-group">
+                                <label className="form-label">Команда</label>
+                                <input 
+                                    type="text"
+                                    className="form-input"
+                                    value={command}
+                                    onChange={(e) => setCommand(e.target.value)}
+                                    placeholder="help"
+                                    style={{fontFamily: 'var(--font-family-mono)'}}
+                                />
+                                <span className="form-help">Без символа /</span>
+                            </div>
+
+                            <div className="form-group">
+                                <label className="form-label">Описание</label>
+                                <input 
+                                    type="text"
+                                    className="form-input"
+                                    value={description}
+                                    onChange={(e) => setDescription(e.target.value)}
+                                    placeholder="Показать справку"
+                                />
+                            </div>
+
+                            <div className="form-group">
+                                <label className="form-label">Ответ бота</label>
+                                <textarea 
+                                    className="form-input form-textarea"
+                                    value={response}
+                                    onChange={(e) => setResponse(e.target.value)}
+                                    placeholder="Это справочная информация о боте..."
+                                />
+                            </div>
+                        </div>
+
+                        <div className="modal-footer">
+                            <button className="btn btn-secondary" style={{flex: 1}} onClick={onClose}>
+                                Отмена
+                            </button>
+                            <button className="btn btn-primary" style={{flex: 1}} onClick={handleSave}>
+                                {initialCommand ? 'Сохранить' : 'Добавить'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        function generateBotCode(platform, config) {
+            if (platform === 'telegram') {
+                return `// Telegram Bot - ${config.name}
+// Создано в BotConstructor
+
+const TelegramBot = require('node-telegram-bot-api');
+const token = process.env.BOT_TOKEN || 'YOUR_BOT_TOKEN';
+const bot = new TelegramBot(token, { polling: true });
+
+// /start команда
+bot.onText(/\\/start/, (msg) => {
+    bot.sendMessage(msg.chat.id, \`${config.welcomeMessage}\`);
+});
+
+${config.commands.map(cmd => `
+// /${cmd.command} - ${cmd.description}
+bot.onText(/\\/${cmd.command}/, (msg) => {
+    bot.sendMessage(msg.chat.id, \`${cmd.response}\`);
+});`).join('\n')}
+
+console.log('✅ ${config.name} запущен!');`;
+            } else {
+                return `// Discord Bot - ${config.name}
+// Создано в BotConstructor
+
+const { Client, GatewayIntentBits } = require('discord.js');
+const client = new Client({ 
+    intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] 
+});
+
+client.once('ready', () => {
+    console.log('✅ ${config.name} онлайн!');
+});
+
+client.on('messageCreate', (message) => {
+    if (message.author.bot) return;
+
+    if (message.content === '!start') {
+        message.reply(\`${config.welcomeMessage}\`);
+    }
+    
+${config.commands.map(cmd => `
+    if (message.content === '!${cmd.command}') {
+        message.reply(\`${cmd.response}\`);
+    }`).join('\n')}
+});
+
+client.login(process.env.BOT_TOKEN);`;
+            }
+        }
+
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+</html>
